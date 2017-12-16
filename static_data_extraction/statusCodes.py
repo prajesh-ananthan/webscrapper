@@ -27,7 +27,9 @@ def main():
                       ]
 
         htmlText = response.text
-        splitList = htmlText.split(Indicators[2])
+        indicator = Indicators[4]
+        print(indicator)
+        splitList = htmlText.split(indicator)
 
         afterFirstSplit = splitList[1].split("\">")[2]
         afterSecondSplit = afterFirstSplit.split("</span>")[0]
