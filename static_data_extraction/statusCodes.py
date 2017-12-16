@@ -1,3 +1,7 @@
+"""
+A simple Webscraper POC project that extracts data from Yahoo finances site
+"""
+
 import re
 
 import requests
@@ -8,33 +12,32 @@ def main():
     response = requests.get(url)
 
     if response.status_code == requests.codes.ok:
-        Indicators = ["Previous Close",
-                      "Open",
-                      "Bid",
-                      "Ask",
-                      "Day's Range",
-                      "52 Week Range",
-                      "Volume",
-                      "Avg. Volume",
-                      "Market Cap",
-                      "Beta",
-                      "PE Ratio (TTM)",
-                      "EPS (TTM)",
-                      "Earnings Date",
-                      "Forward Dividend & Yield",
-                      "Ex-Divident Date",
-                      "1y Target Est",
-                      ]
-
+        Indicators = {"Previous Close": [],
+                      "Open": [],
+                      "Bid": [],
+                      "Ask": [],
+                      "Day&#x27;s Range": [],
+                      "52 Week Range": [],
+                      "Volume": [],
+                      "Avg. Volume": [],
+                      "Market Cap": [],
+                      "Beta": [],
+                      "PE Ratio (TTM)": [],
+                      "EPS (TTM)": [],
+                      "Earnings Date": [],
+                      "Forward Dividend & Yield": [],
+                      "Ex-Divident Date": [],
+                      "1y Target Est": []
+                      }
+        # TODO: Some values are not parsed properly to the dictionary due to HTML content
+        # https://goo.gl/B2UcKw
         htmlText = response.text
-        indicator = Indicators[4]
-        print(indicator)
-        splitList = htmlText.split(indicator)
-
-        afterFirstSplit = splitList[1].split("\">")[2]
-        afterSecondSplit = afterFirstSplit.split("</span>")[0]
-        previosClose = remove_tags(afterSecondSplit)
-        print(previosClose)
+        for indicator in Indicators:
+            splitList = htmlText.split(indicator)
+            afterFirstSplit = splitList[1].split("\">")[2]
+            afterSecondSplit = afterFirstSplit.split("</span>")[0]
+            data = remove_tags(afterSecondSplit)
+            print(indicator + ": " + data)
 
 
 def remove_tags(text):
